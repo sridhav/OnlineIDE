@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ACE in Action</title>
+    <link rel="stylesheet" href="js/codemirror/lib/codemirror.css">
+    <script src="js/codemirror/lib/codemirror.js"></script>
+
+    <style type="text/css" media="screen">
+        #editor {
+            height:300px;
+        }
+    </style>
+
+    <script>
+        var edit = CodeMirror.fromTextArea("editor", {
+            lineNumbers: true
+        });
+    </script>
+</head>
+<body>
+
+<textarea id="editor"></textarea>
+</body>
+</html>

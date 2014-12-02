@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html data-ng-app="mainModule" lang="en">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sridhar</title>
+
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="js/codemirror/lib/codemirror.css" rel="stylesheet">
+
+    <style>
+        #inputcss, #outputcss {
+            margin: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div data-ng-controller="headerDataController">
+    <ul>
+        <li ng-repeat="val in headerItems"></li>
+    </ul>
+</div>
+
+<div data-ng-controller="tabController">
+    <div class="form-inline">
+        <input type="text" class="form-control" ng-model="newFile" required placeholder="Enter File Name"/>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                FileType <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="type in types">
+                    <a href="#">{{type.fullName}} (.{{type.shortName}})</a>
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="btn btn-default" ng-click="insertTab()">Create</button>
+    </div>
+
+    <div>
+        <tabset>
+
+            <tab ng-repeat="tab in tabs" class=tabs heading="{{tab.name}}.{{tab.shortName}}" ng-click="change()"
+                 active="tab.active">
+            </tab>
+            <tab ng-click="insertTab()" heading="+" active="false"></tab>
+        </tabset>
+        <table align="center">
+            <tr>
+                <td rowspan="2" id="codeCol"><span id="codecss"><textarea id="code"></textarea></span></td>
+                <td><span id="inputcss"><textarea id="input"></textarea></span></td>
+            </tr>
+            <tr>
+
+                <td><span id="outputcss"><textarea id="output"></textarea></span></td>
+            </tr>
+        </table>
+        <button type="button" ng-click="save()" class="btn btn-default">Save</button>
+        <button type="button" ng-click="saveToLocal()" class="btn btn-default">Save</button>
+        <button type="button" ng-click="execute()" class="btn btn-default">Run</button>
+
+    </div>
+</div>
+
+
+<script src="js/codemirror/lib/codemirror.js"></script>
+<script src="js/codemirror/mode/clike/clike.js"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/angular.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/ui-bootstrap-custom-0.12.0.js"></script>
+<script src="js/ui-bootstrap-custom-tpls-0.12.0.js"></script>
+<script src="app/app.js"></script>
+<script src="app/services/tabService.js"></script>
+<script src="app/controllers/controllers.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var prevTab = -1;
+        var activeTab = -1;
+
+        /* $('.tabs').bind('change', function (e) {
+         // e.target is the new active tab according to docs
+         // so save the reference in case it's needed later on
+         window.activeTab = e.target;
+         // display the alert
+         alert("hello");
+         // Load data etc
+         });
+         */
+        $('#programTabs').on('show.bs.tab', function (e) {
+            var val1 = e.target;// activated tab
+            var val2 = e.relatedTarget;// previous tab
+            activeTab = tabValue($(val1).text());
+            prevTab = tabValue($(val2).text());
+            angular.element(document.getElementById('tabControl')).scope().updateContent(prevTab, activeTab);
+        });
+
+        tabValue = function (str) {
+            str = $.trim(str);
+            console.log(str);
+
+            str = str.replace("x", "");
+            str = $.trim(str);
+            console.log(str);
+            str = str.substring(0, str.indexOf(' '));
+            console.log(str);
+            return Number(str);
+        }
+    });
+
+
+</script>
+
+<noscript>
+    <h1>ENABLE JAVA SCRIPT</h1>
+</noscript>
+
+</body>
+</html>
